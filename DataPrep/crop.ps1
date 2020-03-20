@@ -3,7 +3,7 @@
 #   Dest: D:\Visible_Data\2.Cropped\[1|2|3|4|m|ma]
 
 
-$src_folder = "D:\Google Drive\PhD_Data\Raw\"
+$src_folder = $env:GDRIVE+"\PhD_Data\Raw\"
 $dest_folder = "D:\Visible_Data\2.Cropped\"
 
 $categories = "1","2","3","4","m","ma"

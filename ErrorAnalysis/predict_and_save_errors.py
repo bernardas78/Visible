@@ -1,5 +1,5 @@
 # Predicts each file from ListValFiles.csv
-#   Ouputs errors to D:\Google Drive\PhD_Data\Visible_ErrorAnalysis\Misclassifications\[true_class]\[predicted_class].orig_filename.[jpg|png]
+#   Ouputs errors to %GDRIVE%\PhD_Data\Visible_ErrorAnalysis\Misclassifications\[true_class]\[predicted_class].orig_filename.[jpg|png]
 
 from tensorflow.keras.models import load_model
 import pandas as pd
