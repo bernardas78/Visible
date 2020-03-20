@@ -1,14 +1,14 @@
 # Randomly chooses a file and copies to selected category directory
 #	Reads from ListFiles.csv (made by ListFiles.ps1)
-#	Copies to D:\Google Drive\PhD_Data\Raw\SCO*
-
-dest_folder_template = 'D:/Google Drive/PhD_Data/Raw/SCO'
+#	Copies to %GDRIVE%\PhD_Data\Raw\SCO*
 
 import pandas as pd
 import numpy as np
 from shutil import copy
 import os
 import math
+
+dest_folder_template = os.environ['GDRIVE'] + "\\PhD_Data\\Raw\\SCO"
 
 print ('Reading file ListFiles.csv...')
 df_files = pd.read_csv ('ListFiles.csv', header=None)
@@ -41,5 +41,5 @@ while (True):
 	else:
 
 		# copy to dest
-		dest_folder = dest_folder_template + str(sco) + '/' + category_folder + '/'
+		dest_folder = dest_folder_template + str(sco) + '\\' + category_folder + '\\'
 		copy (sco_filename, dest_folder)

@@ -3,11 +3,12 @@
 
 import pandas as pd
 from os import path
+import os
 
-filename_100clsf_res = r"D:\Google Drive\PhD_Data\Visible_ErrorAnalysis\Relabelling\Preds100Clsf.csv"
-filename_100clsf_res_iclOrig = r"D:\Google Drive\PhD_Data\Visible_ErrorAnalysis\Relabelling\Preds100Clsf_IncRawFilename.csv"
-orig_filenames_folder = "D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis\\Relabelling\\ListLabelledUnsplit_ForAugmentation\\"
-raw_folder = "D:\\Google Drive\\PhD_Data\\Raw\\"
+filename_100clsf_res = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Relabelling\\Preds100Clsf.csv"
+filename_100clsf_res_iclOrig = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Relabelling\\Preds100Clsf_IncRawFilename.csv"
+orig_filenames_folder = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Relabelling\\ListLabelledUnsplit_ForAugmentation\\"
+raw_folder = os.environ['GDRIVE'] + "\\PhD_Data\\Raw\\"
 scos = ["SCO1","SCO2","SCO3","SCO4"]
 
 # Load all subcategory files for lookup of filename

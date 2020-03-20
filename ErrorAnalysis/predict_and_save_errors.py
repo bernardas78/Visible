@@ -8,7 +8,7 @@ import numpy as np
 import shutil
 from PIL import Image
 
-save_to_dir_template = "D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis\\Misclassifications"
+save_to_dir_template = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Misclassifications"
 
 # Load model
 model_filename = "j:\\Visible_models\\model_6classes_v5.h5"

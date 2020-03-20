@@ -1,5 +1,5 @@
 # Crop files from SCO-specific directories to a common directory
-#   Src: D:\Google Drive\PhD_Data\Raw\SCO*\[1|2|3|4|m|ma]
+#   Src: %GDRIVE%\PhD_Data\Raw\SCO*\[1|2|3|4|m|ma]
 #   Dest: D:\Visible_Data\2.Cropped\[1|2|3|4|m|ma]
 
 

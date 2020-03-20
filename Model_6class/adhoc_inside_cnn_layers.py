@@ -21,7 +21,7 @@ picture_filenames = [
 ]
 
 # Where to create feature maps?
-activations_folder = "D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis\\Inside_cnn\\"
+activations_folder = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Inside_cnn\\"
 
 target_shape = (224,224)
 grid_size = [8,8]

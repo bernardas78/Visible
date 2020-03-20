@@ -3,9 +3,9 @@
 #     Dest: 'ListValFiles.csv'
 
 # empty out results file
-$text | Set-Content 'D:\Google Drive\PhD_Data\Visible_ErrorAnalysis\Relabelling\ListFiles_Relabelled.bat'
+$text | Set-Content $env:GDRIVE'\PhD_Data\Visible_ErrorAnalysis\Relabelling\ListFiles_Relabelled.bat'
 
-$relabelled_folder = 'D:\Google Drive\PhD_Data\Raw_Relabelled_1\'
+$relabelled_folder = '%GDRIVE%\PhD_Data\Raw_Relabelled_1\'
 
 
 # get-childitem 'C:\TrainAndVal_6classes\Val\*' -recurse |
@@ -30,5 +30,5 @@ get-childitem 'D:\Visible_Data\RelabelReady\*' -recurse |
 
         # sub-category, file name
         $command = "move """ + $relabelled_folder + "SCO" + $sco + "\" + $oldclass + "\" + $origfilename + """ """ + $relabelled_folder + "SCO" + $sco + "\" + $newclass + """"
-        echo $command | Add-Content 'D:\Google Drive\PhD_Data\Visible_ErrorAnalysis\Relabelling\ListFiles_Relabelled.bat'
+        echo $command | Add-Content $env:GDRIVE'\PhD_Data\Visible_ErrorAnalysis\Relabelling\ListFiles_Relabelled.bat'
     }

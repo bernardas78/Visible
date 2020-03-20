@@ -3,6 +3,7 @@
 from tensorflow.keras.models import load_model
 import numpy as np
 from matplotlib import pyplot as plt
+import os
 
 #version = "v5"
 #versions = [1,2,3,4,5,6,7,8,9,10,11,12,13] # weights.md
@@ -12,7 +13,7 @@ versions = [13,22,23,24] # l2_impact_on_weights.md
 
 def showWeightsOfModel (version):
     model_file_name = r"J:\Visible_models\model_6classes_" + version + ".h5"
-    weights_chart_file_name = r"D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis\Weights\model_6classes_" + version + "_weights.png"
+    weights_chart_file_name = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\Weights\model_6classes_" + version + "_weights.png"
 
     #data_dir_6classes_val = r"C:\TrainAndVal_6classes\Val"
     data_dir_6classes_val = r"D:\Visible_Data\3.SplitTrainVal\Val"

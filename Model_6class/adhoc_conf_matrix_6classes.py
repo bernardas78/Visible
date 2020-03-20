@@ -5,12 +5,11 @@ from sklearn.metrics import confusion_matrix
 import numpy as np
 from matplotlib import pyplot as plt
 import os
-import math
 
 version = "v5"
 model_file_name = r"J:\Visible_models\model_6classes_" + version + ".h5"
-conf_mat_file_name = r"D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis\model_6classes_" + version + "_conf_mat.png"
-conf_mat_no_diag_file_name = r"D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis\model_6classes_" + version + "_conf_mat_no_diag.png"
+conf_mat_file_name = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\model_6classes_" + version + "_conf_mat.png"
+conf_mat_no_diag_file_name = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\model_6classes_" + version + "_conf_mat_no_diag.png"
 
 #data_dir_6classes_val = r"C:\TrainAndVal_6classes\Val"
 data_dir_6classes_val = r"D:\Visible_Data\3.SplitTrainVal\Val"

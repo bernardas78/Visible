@@ -8,7 +8,7 @@ from PIL import Image
 import os
 
 # Where to create activation box plots?
-activations_folder = "D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis\\Activations\\"
+activations_folder = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Activations\\"
 
 # v13 - no batch normalization; v14-18 - added BN in various layers
 #versions = [13,14,15,16,17,18,19] #bn_impact_on_activations.md
