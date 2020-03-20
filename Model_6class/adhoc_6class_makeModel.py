@@ -24,13 +24,13 @@ l2_layers_list = {
     24: {"d-2": 0.5, "d-3": "0.5"},
 }
 
-for i in np.arange(22, 25):
+for i in np.arange(19,20):
     model = t_6_v1.trainModel(epochs=100,
                               bn_layers=bn_layers_list[i] if i in bn_layers_list else [],
                               dropout_layers=dropout_layers_list[i] if i in dropout_layers_list else [],
                               l2_layers = l2_layers_list[i] if i in l2_layers_list else {})
     model_file_name = r"J:\Visible_models\model_6classes_v" + str(i) + ".h5"
-    model.save(model_file_name)
+    #model.save(model_file_name)
     del model
 
 #model = load_model (model_file_name)

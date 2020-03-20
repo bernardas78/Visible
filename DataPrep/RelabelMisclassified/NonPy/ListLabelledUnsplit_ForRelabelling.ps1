@@ -7,7 +7,7 @@ $subcategories = "1","2","3","4","m","ma"
 foreach ($subcategory in $subcategories)
 {
     # empty out results file
-    $subcat_filename = 'ListLabelledUnsplit_ForAugmentation\' + $subcategory + '.csv'
+    $subcat_filename = 'D:\Google Drive\PhD_Data\Visible_ErrorAnalysis\Relabelling\ListLabelledUnsplit_ForAugmentation\' + $subcategory + '.csv'
     $text | Set-Content $subcat_filename
 
     $subcat_folder = 'D:\Visible_Data\2.Cropped\' + $subcategory

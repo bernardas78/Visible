@@ -64,7 +64,14 @@ class AugSequence(Sequence):
         # update counter
         self.cnter = (self.cnter+1) % len(self)
 
+        # preserve filenames for getMinibatchFilenames()
+        self.img_filesnames_batch = img_filesnames_batch
+
         return X, y
+
+    # Return filenames of the last minibatch
+    def getMinibatchFilenames(self):
+        return self.img_filesnames_batch
 
     def on_epoch_end(self):
         #if self.cnter >= len(self):

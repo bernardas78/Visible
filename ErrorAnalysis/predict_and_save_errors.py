@@ -1,5 +1,5 @@
 # Predicts each file from ListValFiles.csv
-#   Ouputs errors to D:\Google Drive\PhD_Data\Visible_ErrorAnalysis\[true_class]\[predicted_class].orig_filename.[jpg|png]
+#   Ouputs errors to D:\Google Drive\PhD_Data\Visible_ErrorAnalysis\Misclassifications\[true_class]\[predicted_class].orig_filename.[jpg|png]
 
 from tensorflow.keras.models import load_model
 import pandas as pd
@@ -8,7 +8,7 @@ import numpy as np
 import shutil
 from PIL import Image
 
-save_to_dir_template = "D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis"
+save_to_dir_template = "D:\\Google Drive\\PhD_Data\\Visible_ErrorAnalysis\\Misclassifications"
 
 # Load model
 model_filename = "j:\\Visible_models\\model_6classes_v5.h5"

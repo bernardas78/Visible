@@ -31,7 +31,7 @@ def splitTrainVal ():
     pic_IsTrain = np.repeat(1, len(pic_filenames))
 
     # Sse 1st fold of K-fold CV to split Train/Val
-    skf = StratifiedKFold(n_splits= int(1/val_pct) )
+    skf = StratifiedKFold ( shuffle=True, n_splits= int(1/val_pct) )
     for train_index, test_index in skf.split(pic_filenames, pic_subcategories):
         pic_IsTrain[test_index] = 0
         #we just need 1st fold
