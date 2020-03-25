@@ -23,7 +23,7 @@ subcategories = ["1","2","3","4","m","ma"]
 
 print ('Reading file ListLabelledFiles.csv...')
 df_files = pd.read_csv ('ListLabelledFiles.csv', header=None, names=["train_or_test","subcategory","filepath"])
-print ('Done Reading')
+#print ('Done Reading. Shape: ' + str(df_files.shape))
 
 datagen=ImageDataGenerator(
     rotation_range=10,
@@ -55,8 +55,9 @@ for cur_train_or_test in train_or_tests:
         # Init how many files augmented for the cur_subcategory
         files_agmented_cur_subcategory = 0
 
+        #print('Before flow_from_dataframe. Shape: ' + str(df_files_cur.shape))
         augmenter=datagen.flow_from_dataframe(dataframe=df_files_cur, x_col="filepath", y_col="subcategory",
-                                              class_mode="categorical", target_size=(255,255),
+                                              class_mode="categorical", target_size=(256,256),
                                               save_to_dir= save_to_dir , save_format="jpg", save_prefix="",
                                               batch_size=batch_size, shuffle=False)
 

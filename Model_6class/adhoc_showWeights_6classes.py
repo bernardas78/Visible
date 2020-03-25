@@ -9,7 +9,8 @@ import os
 #versions = [1,2,3,4,5,6,7,8,9,10,11,12,13] # weights.md
 #versions = [13,14,15,16,17,18,19] # bn_impact_on_weights.md
 #versions = [13,20,21] # dropout_impact_on_weights.md
-versions = [13,22,23,24] # l2_impact_on_weights.md
+#versions = [13,22,23,24] # l2_impact_on_weights.md
+versions = [26,27,28,29,30,31] # cnn456_dense23_impact_on_weights.md
 
 def showWeightsOfModel (version):
     model_file_name = r"J:\Visible_models\model_6classes_" + version + ".h5"

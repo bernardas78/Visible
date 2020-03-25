@@ -9,10 +9,37 @@ $dest_folder = "D:\Visible_Data\2.Cropped\"
 $categories = "1","2","3","4","m","ma"
 
 $sco_dir = "SCO1" ,"SCO2","SCO3","SCO4"
-$crop_x = 370,300,540,900
-$crop_y = 100,130,160,150
-$crop_width = 360,360,360,360
-$crop_height = 360,360,360,360
+
+#$crop_x = 370,300,540,900
+#$crop_y = 100,130,160,150
+#$crop_width = 360,360,360,360
+#$crop_height = 360,360,360,360
+
+class CropProperties {
+    [string]$sco
+    [string]$cutoffdatetime
+    [int]$x
+    [int]$y
+    [int]$width
+    [int]$height;
+}
+
+# Camera was moved at certain times; take proper crops
+$crops = @()
+$crops += [CropProperties]@{ sco="SCO1";cutoffdatetime=20190909090000;x=235;y=100;width=360;height=360 } 
+$crops += [CropProperties]@{ sco="SCO1";cutoffdatetime=20190929110000;x=370;y=100;width=360;height=360 } 
+$crops += [CropProperties]@{ sco="SCO1";cutoffdatetime=20191009000000;x=290;y=100;width=360;height=360 }
+$crops += [CropProperties]@{ sco="SCO1";cutoffdatetime=20191208150000;x=520;y=100;width=360;height=360 }
+$crops += [CropProperties]@{ sco="SCO1";cutoffdatetime=20191210110000;x=290;y=100;width=360;height=360 }
+$crops += [CropProperties]@{ sco="SCO1";cutoffdatetime=20200101000000;x=175;y=100;width=360;height=360 }
+
+$crops += [CropProperties]@{ sco="SCO2";cutoffdatetime=20190907134500;x=300;y=130;width=360;height=360 }
+$crops += [CropProperties]@{ sco="SCO2";cutoffdatetime=20200101000000;x=255;y=130;width=360;height=360 }
+
+$crops += [CropProperties]@{ sco="SCO3";cutoffdatetime=20200101000000;x=540;y=160;width=360;height=360 }
+
+$crops += [CropProperties]@{ sco="SCO4";cutoffdatetime=20200101000000;x=900;y=150;width=360;height=360 }
+
 
 # Recreate child folders to avoid errors
 
@@ -20,6 +47,9 @@ foreach ($category in $categories){
     Remove-Item $dest_folder\$category\ -Force -Recurse
     md $dest_folder\$category
 }
+
+
+
 
 get-childitem $src_folder'\SCO*' -recurse | 
     where-object { $_.Extension -in '.jpg','.png' } |
@@ -35,24 +65,42 @@ get-childitem $src_folder'\SCO*' -recurse |
         #echo $sco,$category
 
         # Proper crop
-        $sco_ind = $sco_dir.IndexOf($sco)
-        If ($sco_ind -lt 0) {
-            echo "SCO not found: ", $sco, $_.FullName
-            continue
+
+        $filedatetime = $_.Name.Split('_')[-1].Substring(0,14)  # files named like 477016319917_9_20191210155832438.jpg
+
+        $found=$false
+        $crops.getEnumerator() | Where-Object -FilterScript {$_.sco -eq $sco} | Sort-Object -Property cutoffdatetime | foreach {
+            if ($_.cutoffdatetime -gt $filedatetime -and -not $found){
+                $found=$true
+                $crop_x_this = $_.x
+                $crop_y_this = $_.y
+                $crop_width_this = $_.width
+                $crop_height_this = $_.height
+                }
+                #Write-Host($_.cutoffdatetime)
             }
 
-        $crop_x_this = $crop_x[$sco_ind]
-        $crop_y_this = $crop_y[$sco_ind]
-        $crop_width_this = $crop_width[$sco_ind]
-        $crop_height_this = $crop_height[$sco_ind]
+        #$sco_ind = $sco_dir.IndexOf($sco)
+        #If ($sco_ind -lt 0) {
+        #    echo ("SCO not found: " + $sco + " file: " + $_.FullName)
+        #    return # instead "continue", "return" only breaks from iteration: https://stackoverflow.com/questions/7760013/why-does-continue-behave-like-break-in-a-foreach-object
+        #    }
+
+        #$crop_x_this = $crop_x[$sco_ind]
+        #$crop_y_this = $crop_y[$sco_ind]
+        #$crop_width_this = $crop_width[$sco_ind]
+        #$crop_height_this = $crop_height[$sco_ind]
 
         $dest = $dest_folder + $category + "\" + $_.Name
+
+        #Temporary: split by sco; all classes to 1 dir; start with datetime
+        #$dest = $dest_folder + $sco + "\" + $_.Name.Split('_')[-1].Substring(0,14) + "." + $_.Name.Split('.')[-1]
 
         #Crop and save
         $cmd = "magick.exe convert -crop " +
                 $crop_width_this + "x" + $crop_height_this + "+" + $crop_x_this + "+" + $crop_y_this + 
                 " """ + $_.FullName + """ " + $dest
-        
+
         echo $cmd
         iex $cmd
 

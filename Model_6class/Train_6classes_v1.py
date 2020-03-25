@@ -1,14 +1,34 @@
-from Model_6class import Model_6classes_v1 as m_6classes_v1
+from Model_6class import Model_6classes_c4_d3_v1 as m_6classes_c4_d3_v1
+from Model_6class import Model_6classes_c5_d2_v1 as m_6classes_c5_d2_v1
+from Model_6class import Model_6classes_c5_d3_v1 as m_6classes_c5_d3_v1
+from Model_6class import Model_6classes_c6_d2_v1 as m_6classes_c6_d2_v1
+#import Model_6classes_c4_d3_v1 as m_6classes_c4_d3_v1
+#import Model_6classes_c5_d2_v1 as m_6classes_c5_d2_v1
+#import Model_6classes_c5_d3_v1 as m_6classes_c5_d3_v1
+#import Model_6classes_c6_d2_v1 as m_6classes_c6_d2_v1
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-def trainModel(epochs=1, train_d1=False, train_d2=False, use_class_weight=False, bn_layers = [], dropout_layers=[], l2_layers={}):
+modelVersions_dic = {
+    "Model_6classes_c4_d3_v1": m_6classes_c4_d3_v1.prepModel,
+    "Model_6classes_c5_d2_v1": m_6classes_c5_d2_v1.prepModel,
+    "Model_6classes_c5_d3_v1": m_6classes_c5_d3_v1.prepModel,
+    "Model_6classes_c6_d2_v1": m_6classes_c6_d2_v1.prepModel
+}
+
+def trainModel(epochs,
+               bn_layers, dropout_layers, l2_layers,
+               padding, target_size, dense_sizes,architecture):
+
     # Trains a model
     #   model = optional parameter; creates new if not passed; otherwise keeps training
     #   epochs - number of max epochs to train (subject to early stopping)
     #   bn_layers - list of indexes of Dense layers (-1 and down) and CNN layers (1 and up) where Batch Norm should be applied
     #   dropout_layers - list of indexes of Dense layers (-1 and down) where Dropout should be applied
     #   bn_layers - list of indexes of Dense layers (-1 and down) where L2 regularization should be applied
+    #   padding - changed to "same" to keep 2^n feature map sizes
+    #   dense_sizes - dictionary of dense layer sizes (cnt of neurons)
+    #   architecture - one of:  Model_6classes_c4_d3_v1, Model_6classes_c5_d2_v1, Model_6classes_c5_d3_v1
     # Returns:
     #   model: trained Keras model
     #
@@ -16,7 +36,7 @@ def trainModel(epochs=1, train_d1=False, train_d2=False, use_class_weight=False,
     #   model = Train_v1.trainModel(epochs=20)
 
     crop_range = 1  # number of pixels to crop image (if size is 235, crops are 0-223, 1-224, ... 11-234)
-    target_size = 224
+    #target_size = 224
     batch_size = 64
     #datasrc = "visible"
 
@@ -54,8 +74,19 @@ def trainModel(epochs=1, train_d1=False, train_d2=False, use_class_weight=False,
     #                            test=False, shuffle=True, datasrc=datasrc, debug=False)
 
 
-    # Crete model
-    model = m_6classes_v1.prepModel( input_shape=(target_size,target_size,3), bn_layers=bn_layers, dropout_layers=dropout_layers, l2_layers=l2_layers )
+    # Create model
+    prepModel = modelVersions_dic[architecture]
+    prep_model_params = {
+        "input_shape": (target_size,target_size,3),
+        "bn_layers": bn_layers,
+        "dropout_layers": dropout_layers,
+        "l2_layers": l2_layers,
+        "padding": padding,
+        "dense_sizes": dense_sizes}
+    model = prepModel (**prep_model_params)
+    #model = m_6classes_c4_d3_v1.prepModel( input_shape=(target_size,target_size,3),
+    #                                       bn_layers=bn_layers, dropout_layers=dropout_layers, l2_layers=l2_layers,
+    #                                       padding=padding, dense_sizes=dense_sizes )
     print (model.summary())
 
     # prepare a validation data generator, used for early stopping
