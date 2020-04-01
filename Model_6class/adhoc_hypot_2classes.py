@@ -4,22 +4,23 @@ import seaborn as sns
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 import numpy as np
 from matplotlib import pyplot as plt
-import os
 import math
 import os
-version = "v5"
-model_file_name = r"J:\Visible_models\model_6classes_" + version + ".h5"
-hypot_metrics_file_name = os.environ['GDRIVE'] + "\PhD_Data\Visible_ErrorAnalysis\model_6classes_" + version + "_hypot_metricst.png"
+
+
+version = 30
+model_file_name = r"J:\Visible_models\model_6classes_v" + str(version) + ".h5"
+hypot_metrics_file_name = os.environ['GDRIVE'] + "\PhD_Data\Visible_ErrorAnalysis\Hypot_2_3_classes\model_6classes_v" + str(version) + "_hypot_metricst.png"
 
 #data_dir_6classes_val = r"C:\TrainAndVal_6classes\Val"
 data_dir_6classes_val = r"D:\Visible_Data\3.SplitTrainVal\Val"
 
 # Load and evaluate model on validation set
 model = load_model(model_file_name)
-# _,preds,labels,metrics = Metrics.CalcMetrics(model=model, model_type="resnet", datasrc = "ilsvrc14_10classes", testTest=True)
 
-target_size = 224
-batch_size = 128
+#target_size = 224  # for v<=26
+target_size = 256
+batch_size = 64
 
 class_names = os.listdir(data_dir_6classes_val)
 
@@ -30,15 +31,6 @@ val_iterator = dataGen.flow_from_directory(directory=data_dir_6classes_val, targ
 
 Y_pred = model.predict_generator(val_iterator, len(val_iterator))
 y_pred = np.argmax(Y_pred, axis=1)
-
-# conf_mat = confusion_matrix(val_iterator.classes, y_pred))
-#conf_mat = confusion_matrix(y_true=val_iterator.classes, y_pred=y_pred)  # , labels=actual_class_names)
-# _preds, labels,_ = Metrics.CalcMetrics(model=model, model_type=model_type, datasrc = "ilsvrc14_10classes")
-
-# Hypothetical metrics if classes were combined in various ways:
-#   Subcategory "1" always invisible
-#   Subcategory "4" always visible
-#   Others - 2,3,m,ma - can be placed to either
 
 # Initialize rectangular to store metrics for each combination and array of class names
 metrics_mat = np.empty((0,4))
@@ -57,7 +49,7 @@ static_visible_class_binary_vector = [ class_names[i] in static_visible_class_na
 static_invisible_indices = all_class_indices[static_invisible_class_binary_vector]
 static_visible_indices = all_class_indices[static_visible_class_binary_vector]
 
-# classes that can be in either Visible or Not (all except 1 and 4)
+# classes that can be in either Visible or Not (all except static_visible and static_invisible)
 dynamic_class_indices = all_class_indices [ ~np.bitwise_or (static_invisible_class_binary_vector , static_visible_class_binary_vector)  ]
 
 # 2^4 combinations: move 2,3,m,ma subs to either category
