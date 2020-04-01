@@ -30,3 +30,21 @@ def get_activations(model, X):
         list_layernames.append(layer.name)
 
     return (list_layernames, list_activations)
+
+# Pre-last layer activations
+def get_activations_preLast(model, X):
+
+    layer = model.layers[-2]
+    func_activation = function([model.input], [layer.output])
+    output_activation = func_activation([X])[0]
+
+    return output_activation
+
+# Last layer activations
+def get_activations_Last(model, X):
+
+    layer = model.layers[-1]
+    func_activation = function([model.input], [layer.output])
+    output_activation = func_activation([X])[0]
+
+    return output_activation
