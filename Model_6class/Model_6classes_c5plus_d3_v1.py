@@ -6,25 +6,19 @@
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Convolution2D, MaxPooling2D, Flatten, Dense, Dropout, Activation, BatchNormalization
-from numpy.random import seed
-import tensorflow as tf
 from tensorflow.keras import regularizers
+import numpy as np
 
-def prepModel( **argv ):
-#def prepModel( input_shape, bn_layers, dropout_layers, l2_layers, padding, dense_sizes ):
-    input_shape = argv["input_shape"]
-    bn_layers = argv["bn_layers"]
-    dropout_layers = argv["dropout_layers"]
-    l2_layers = argv["l2_layers"]
-    padding = argv["padding"]
-    dense_sizes = argv["dense_sizes"]
+def prepModel( input_shape, bn_layers, dropout_layers, l2_layers, padding, dense_sizes,
+               conv_layers_over_5, use_maxpool_after_conv_layers_after_5th):
     #   bn_layers - list of indexes of Dense layers (-1 and down) and CNN layers (1 and up) where Batch Norm should be applied
     #   dropout_layers - list of indexes of Dense layers (-1 and down) where Dropout should be applied
     #   bn_layers - list of indexes of Dense layers (-1 and down) where L2 regularization should be applied
     #   padding - changed to "same" to keep 2^n feature map sizes
     #   dense_sizes - dictionary of dense layer sizes (cnt of neurons)
-
-    print ("Model_6classes_c5_d3")
+    #   conv_layers_over_5 - number of convolutional layers after 5th
+    #   use_maxpool_after_conv_layers_after_5th - list of boolean values whether to use maxpooling after 5th layer
+    print ("Model_6classes_c5plus_d3")
 
     model = Sequential()
 
@@ -64,6 +58,15 @@ def prepModel( **argv ):
         model.add (BatchNormalization())
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    # 6th+ CNN
+    for layer_ind_after_5th in np.arange ( conv_layers_over_5 ):
+        model.add(Convolution2D(256, (3, 3), padding=padding))
+        if "c+"+str(layer_ind_after_5th+6) in bn_layers:
+            model.add (BatchNormalization())
+        model.add(Activation('relu'))
+        if use_maxpool_after_conv_layers_after_5th[layer_ind_after_5th]:
+            model.add(MaxPooling2D(pool_size=(2, 2)))
 
     model.add(Flatten())
 

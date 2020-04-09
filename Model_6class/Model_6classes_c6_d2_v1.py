@@ -10,7 +10,14 @@ from numpy.random import seed
 import tensorflow as tf
 from tensorflow.keras import regularizers
 
-def prepModel( input_shape, bn_layers, dropout_layers, l2_layers, padding, dense_sizes ):
+def prepModel( **argv ):
+#def prepModel(input_shape, bn_layers, dropout_layers, l2_layers, padding, dense_sizes):
+    input_shape = argv["input_shape"]
+    bn_layers = argv["bn_layers"]
+    dropout_layers = argv["dropout_layers"]
+    l2_layers = argv["l2_layers"]
+    padding = argv["padding"]
+    dense_sizes = argv["dense_sizes"]
     #   bn_layers - list of indexes of Dense layers (-1 and down) and CNN layers (1 and up) where Batch Norm should be applied
     #   dropout_layers - list of indexes of Dense layers (-1 and down) where Dropout should be applied
     #   bn_layers - list of indexes of Dense layers (-1 and down) where L2 regularization should be applied

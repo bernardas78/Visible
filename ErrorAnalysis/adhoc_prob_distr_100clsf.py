@@ -22,7 +22,7 @@ print ("Loading Preds100Clsf.csv...")
 df_100clsf_res = pd.read_csv ( filename_100clsf_res, header=0)
 print ("Loaded Preds100Clsf.csv")
 
-# Overall disribution of probabilities
+# Overall distribution of probabilities
 if do_distribution_probabilities_of_actual_class:
     f, axarr = plt.subplots(3, 2)
     f.suptitle (" Overall distribution of probabilities ")
@@ -35,7 +35,7 @@ if do_distribution_probabilities_of_actual_class:
     plt.show()
 
 
-# Disribution of probabilities when actual=class; actual!=class;
+# Distribution of probabilities when actual=class; actual!=class;
 if do_distribution_probabilities_of_actual_vs_other_classes:
     f, axarr = plt.subplots(3, 2)
     f.suptitle ("Distribution of probabilities of class X:\n when actual=X (BLUE) and actual<>X (RED)")
@@ -78,6 +78,7 @@ if do_distribution_probabilities_of_each_class_when_actual_class_is_x:
             _ = ax.bar(x + pred_subcategory_id*width, pred_class_counts, width, label=pred_subcategory_name)
 
         ax.set_title("Actual="+true_subcategory_name, pad=-15)
+        # Show only one legend
         if true_subcategory_id == 1:
             ax.legend()
 

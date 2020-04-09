@@ -1,5 +1,6 @@
 # For mis-predictions in validation set:
 #   Create activations files for train set and validation set
+#       Activations file contains: activations, prediction scores, file names, actual classes
 
 import os
 from tensorflow.keras.models import load_model
@@ -10,8 +11,10 @@ import pickle
 
 mispred_knn_folder = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Misclsf_Knn"
 
-train_folder = "D:\\Visible_Data\\3.SplitTrainVal\\Train"
-val_folder = "D:\\Visible_Data\\3.SplitTrainVal\\Val"
+train_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Train"
+val_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Val"
+#train_folder = "C:\\TrainAndVal_6classes\\Train"
+#val_folder = "C:\\TrainAndVal_6classes\\Val"
 
 #   Intermediate file for train, val activations
 train_activations_filename = "\\".join ([mispred_knn_folder,"train_activations_preLast.obj"])
@@ -85,6 +88,6 @@ else:
 print ("Prepared val activations")
 
 # unpack train activations, file names, classes
-#(train_filenames, train_classes, train_activations_preLast) = train_result
-#(val_filenames, val_classes, all_pred_scores, val_activations_preLast) = val_result
+#(train_filenames, train_classes, train_pred_scores, train_activations_preLast) = train_result
+#(val_filenames, val_classes, val_pred_scores, val_activations_preLast) = val_result
 
