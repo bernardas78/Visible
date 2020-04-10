@@ -13,12 +13,15 @@ mispred_knn_folder = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\
 
 #train_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Train"
 #val_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Val"
+#test_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Test"
 train_folder = "C:\\TrainAndVal_6classes\\Train"
 val_folder = "C:\\TrainAndVal_6classes\\Val"
+test_folder = "C:\\TrainAndVal_6classes\\Test"
 
 #   Intermediate file for train, val activations
 train_activations_filename = "\\".join ([mispred_knn_folder,"train_activations_preLast.obj"])
 val_activations_filename = "\\".join ([mispred_knn_folder,"val_activations_preLast.obj"])
+test_activations_filename = "\\".join ([mispred_knn_folder,"test_activations_preLast.obj"])
 
 subcategories = ["1","2","3","4","m","ma"]
 

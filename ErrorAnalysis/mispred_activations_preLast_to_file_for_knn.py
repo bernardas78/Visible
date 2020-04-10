@@ -11,16 +11,19 @@ import pickle
 
 mispred_knn_folder = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Misclsf_Knn"
 
-train_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Train"
-val_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Val"
-#train_folder = "C:\\TrainAndVal_6classes\\Train"
-#val_folder = "C:\\TrainAndVal_6classes\\Val"
+#train_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Train"
+#val_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Val"
+#test_folder = "D:\\Visible_Data\\3.SplitTrainValTest\\Test"
+train_folder = "C:\\TrainAndVal_6classes\\Train"
+val_folder = "C:\\TrainAndVal_6classes\\Val"
+test_folder = "C:\\TrainAndVal_6classes\\Test"
 
 #   Intermediate file for train, val activations
 train_activations_filename = "\\".join ([mispred_knn_folder,"train_activations_preLast.obj"])
 val_activations_filename = "\\".join ([mispred_knn_folder,"val_activations_preLast.obj"])
+test_activations_filename = "\\".join ([mispred_knn_folder,"test_activations_preLast.obj"])
 
-model_filename = "j:\\Visible_models\\model_6classes_v30.h5"
+model_filename = "j:\\Visible_models\\model_6classes_v44.h5"
 print ("Loading model...")
 model = load_model(model_filename)
 print ("Loaded model")
@@ -87,7 +90,17 @@ else:
     pickle.dump(val_result, open(val_activations_filename, 'wb'))
 print ("Prepared val activations")
 
+if os.path.exists(test_activations_filename):
+    #test_result = pickle.load( open(test_activations_filename, 'rb') )
+    print ("File " + test_activations_filename + " already exists. Delete if needed")
+else:
+    test_result = get_all_activations_preLast(test_folder, model)
+    pickle.dump(test_result, open(test_activations_filename, 'wb'))
+print ("Prepared test activations")
+
+
 # unpack train activations, file names, classes
 #(train_filenames, train_classes, train_pred_scores, train_activations_preLast) = train_result
 #(val_filenames, val_classes, val_pred_scores, val_activations_preLast) = val_result
+#(test_filenames, test_classes, test_pred_scores, test_activations_preLast) = test_result
 

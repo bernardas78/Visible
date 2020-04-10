@@ -6,7 +6,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-versions = [40,43,44,45,46,47] #,48
+versions = [40,43,44,45,46,47,48]
 
 model_folder = "J:\\Visible_models\\"
 
@@ -122,9 +122,11 @@ _ = plt.bar(x + 3*width, no_aug_accuracies.values(), width, label="No augmentati
 
 plt.title ("Train accuracy for variant augmentations")
 plt.legend(title='Train accuracy', loc='lower left')
-plt.xticks (ticks=x, labels=[model_names[i] for i in versions], rotation=15)
+plt.xticks (ticks=x, labels=[model_names[i] for i in versions], rotation=45)
+plt.tight_layout()  #to avoid clipping rotated xticks
 
 bars_fig_filename = model_folder + "LearningCurves\\variant_augmentations.jpg"
+
 plt.savefig(bars_fig_filename)
 plt.show()
 
