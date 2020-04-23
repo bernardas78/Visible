@@ -2,6 +2,7 @@
 #
 
 # Source directory where barcode folders are located
+#$unsplit_images_folder = "D:\Visible_Data\2a.Subtracted_SCO_Mean"
 $unsplit_images_folder = "D:\Visible_Data\2.Cropped"
 
 # Destination train and val directory

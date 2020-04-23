@@ -14,15 +14,16 @@ import os
 #versions = [13,20,21] # dropout_impact_on_feature_maps.md
 #versions = [13,22,23,24] # l2_impact_on_feature_maps.md
 #versions = [14,15,16,17,18,19,20,21,22,23,24] # l2_impact_on_feature_maps.md
-versions = [26,27,28,29,30,31] # cnn456_dense23_impact_on_feature_maps.md #target_shape = (224,) for v26, (256,) since
+#versions = [26,27,28,29,30,31] # cnn456_dense23_impact_on_feature_maps.md #target_shape = (224,) for v26, (256,) since
 #versions = [26] # cnn456_dense23_impact_on_feature_maps.md #target_shape = (224,) for v26, (256,) since
 #versions = [27,28,29,30,31] # cnn456_dense23_impact_on_feature_maps.md #target_shape = (224,) for v26, (256,) since
+versions = [32,33,34,35,36,37,38,39] # cnn5678_impact_on_feature_maps.md
 
 picture_filenames = [
     #r"D:\Visible_Data\3.SplitTrainVal\Val\1\000000005315_6_20190905145918346.jpg",
     #r"D:\Visible_Data\3.SplitTrainVal\Val\4\00001157441_5_20191003184503612.jpg"
-    r"D:\Visible_Data\3.SplitTrainVal\Train\1\000000005315_6_20190905145918346.jpg",
-    r"D:\Visible_Data\3.SplitTrainVal\Train\4\00001157441_5_20191003184503612.jpg"
+    r"D:\Visible_Data\3.SplitTrainValTest\Train\1\000000005315_6_20190905145918346.jpg",
+    r"D:\Visible_Data\3.SplitTrainValTest\Train\4\00001157441_5_20191003184503612.jpg"
 ]
 
 # Where to create feature maps?
