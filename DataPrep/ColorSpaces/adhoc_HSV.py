@@ -1,11 +1,11 @@
 # Try to equalize the images by equalizing intensity
 #   Src:
-#       Mean images of each SCO ("D:\\Visible_Data\\ColorSpaces\\SxoX_mean.jpg)
-#       Sample images of each SCO ("D:\\Visible_Data\\ColorSpaces\\SxoX_original.jpg)
+#       Mean images of each SCO ("D:\\Visible_Data\\ColorSpaces\\ScoX_mean.jpg)
+#       Sample images of each SCO ("D:\\Visible_Data\\ColorSpaces\\ScoX_original.jpg)
 #   Dest:
-#       RGB=>HSV=>RGB conversion SxoX_hsv.jpg (make sure conversion works)
-#       Removed an HSV channel: HSV_Var[Hue|Saturation|Value]\\SxoX_hsv_[Hue|Saturation|Value]_[0|64|128|192|255].jpg
-#       Subtracted mean HSV channel value by SCO: SubtractedMean\\scoX_minus_mean_[Hue|Saturation|Value].jpg
+#       RGB=>HSV=>RGB conversion ScoX_hsv.jpg (make sure conversion works)
+#       Removed an HSV channel: HSV_Var[Hue|Saturation|Value]\\ScoX_hsv_[Hue|Saturation|Value]_[0|64|128|192|255].jpg
+#       Subtracted mean HSV channel value by SCO: SubtractedMean_HSV\\scoX_minus_mean_[Hue|Saturation|Value].jpg
 
 from PIL import Image
 import numpy as np
@@ -78,7 +78,7 @@ for sco in ["1","4"]:
         # Convert back to RGB
         img_rgb_arr_subtracted_mean = cv.cvtColor(img_hsv_arr_subtracted_mean.astype(np.uint8), cv.COLOR_HSV2RGB)
         # Save
-        dest_filename = os.path.join(colorspace_folder, "SubtractedMean" ,"sco" + sco + "_minus_mean_" + var_name+ ".png")
+        dest_filename = os.path.join(colorspace_folder, "SubtractedMean_HSV" ,"sco" + sco + "_minus_mean_" + var_name+ ".png")
         Image.fromarray(img_rgb_arr_subtracted_mean).save(dest_filename)
 
         # Fully scaled
@@ -87,7 +87,7 @@ for sco in ["1","4"]:
         # Convert back to RGB
         img_rgb_arr_subtracted_mean = cv.cvtColor(img_hsv_arr_subtracted_mean.astype(np.uint8), cv.COLOR_HSV2RGB)
         # Save
-        dest_filename = os.path.join(colorspace_folder, "SubtractedMean" ,"sco" + sco + "_minus_mean_" + var_name+ "_scaled_0to255.jpg")
+        dest_filename = os.path.join(colorspace_folder, "SubtractedMean_HSV" ,"sco" + sco + "_minus_mean_" + var_name+ "_scaled_0to255.jpg")
         Image.fromarray(img_rgb_arr_subtracted_mean).save(dest_filename)
 
     # Original converted back to to RGB and Save
