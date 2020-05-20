@@ -1,3 +1,13 @@
+# Experiments removing background
+#   do_param_values:
+#       various param values of Dist2Thresh, GMM_M_Count, KNN_K_Count (single image)
+#       result in D:\\Visible_Data\\BgrndRemoval\\<param_name>
+#   do_grid_search:
+#       best param combination (single image)
+#       result: D:\\Visible_Data\\BgrndRemoval\\gridSearch
+#   do_all_sco1_pics:
+#       produce masks (entire batch)
+#       result masks+orig: D:\\Visible_Data\\2.Cropped_BySCO_Masks\\SCO1
 
 import numpy as np
 import cv2 as cv
@@ -7,7 +17,6 @@ from stat import *
 #from matplotlib import pyplot as plt
 
 sco1_bgrnd_path = "D:\\Google Drive\\PhD_Data\\Bgrnd\\SCO1"
-#sco1_bgrnd_path = "D:\\Visible_Data\\2.Cropped_BySCO\\SCO1"
 
 do_param_values = False
 do_grid_search=False

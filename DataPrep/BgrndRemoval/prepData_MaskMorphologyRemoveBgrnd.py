@@ -10,8 +10,8 @@ bgrnd_path = os.environ['GDRIVE'] + "\\PhD_Data\\Bgrnd"
 # Src
 src_dir = "D:\\Visible_Data\\2.Cropped_BySCO"
 # Dest
-masks_dir = "D:\\Visible_Data\\2.Cropped_BySCO_BgrndMasks"
-dest_dir = "D:\\Visible_Data\\2.Cropped_BySCO_BgrndRemoved"
+masks_dir = "D:\\Visible_Data\\2.Cropped_BySCO_BgrndMasksMorphology"
+dest_dir = "D:\\Visible_Data\\2.Cropped_BySCO_BgrndMorphologyRemoved"
 
 def learn_background ( backSub, bgrnd_path):
     for file_or_dir in os.listdir (bgrnd_path):
@@ -74,6 +74,11 @@ for sco_dir in os.listdir(bgrnd_path):
             img = np.asarray(Image.open(img_path))
 
             fgMask = backSub.apply(img, learningRate=1e-8)  # default value for no-learning learningRate=0 fails; need a small value
+
+            # Apply morphology: Open, then Close ( for kernel values: 20200601.MaskMorphology.docx)
+            openingkernel, closingkernel = np.ones((2, 2), np.uint8), np.ones((9, 9), np.uint8)
+            fgMask = cv.morphologyEx(src=fgMask, op=cv.MORPH_OPEN, kernel=openingkernel)
+            fgMask = cv.morphologyEx(src=fgMask, op=cv.MORPH_CLOSE, kernel=closingkernel)
 
             #make image to contain both orig and mask side by side
             img_both_arr = np.zeros ( (fgMask.shape[0],fgMask.shape[1]*2,3), dtype=np.uint8 )
