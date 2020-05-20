@@ -27,7 +27,7 @@ def trainModel(epochs=1, train_d1=False, train_d2=False, use_class_weight=False)
     # define train and validation sets
     trainDataGen = as_v1.AugSequence(crop_range=crop_range, allow_hor_flip=False, target_size=target_size, batch_size=32,
                                 subtractMean=0.0, preprocess="div255",
-                                test=False, shuffle=True, datasrc=datasrc, debug=False)
+                                train_val_test="train", shuffle=True, datasrc=datasrc, debug=False)
 
     # use class weights for unbalanced classes
     class_weight=None
@@ -38,7 +38,7 @@ def trainModel(epochs=1, train_d1=False, train_d2=False, use_class_weight=False)
 
     vldDataGen = as_v1.AugSequence(crop_range=crop_range, allow_hor_flip=False, target_size=target_size, batch_size=32,
                                 subtractMean=0.0, preprocess="div255",
-                                test=True, shuffle=True, datasrc=datasrc, debug=False)
+                                train_val_test="val", shuffle=True, datasrc=datasrc, debug=False)
 
     # Crete model
     model = m_v1.prepModel( input_shape=(target_size,target_size,3) )

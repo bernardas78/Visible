@@ -9,16 +9,16 @@ from scipy.stats import ttest_ind, t
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 
-def PredsToFile(model, datasrc="visible", test=True, filename="D:\Visible\Eval\PredsFile.csv",
-                vis_preds_filename="D:/Visible/Eval/vis_preds.csv",
-                invis_preds_filename="D:/Visible/Eval/invis_preds.csv"):
+def PredsToFile(model, datasrc="visible", filename="D:\Visible_code\Eval\PredsFile.csv",
+                vis_preds_filename="D:/Visible_code/Eval/vis_preds.csv",
+                invis_preds_filename="D:/Visible_code/Eval/invis_preds.csv"):
     crop_range = 1  # number of pixels to crop image (if size is 235, crops are 0-223, 1-224, ... 11-234)
-    target_size = 224
-    datasrc = "visible"
+    target_size = 256
+    datasrc = "6class"
 
     dataGen = as_v1.AugSequence(crop_range=crop_range, allow_hor_flip=False, target_size=target_size, batch_size=32,
                                 subtractMean=0.0, preprocess="div255", shuffle=False,
-                                test=True, datasrc=datasrc, debug=False)
+                                train_val_test="test", datasrc=datasrc, debug=False)
 
     # preds = model.predict_generator(dataGen, steps=len(dataGen))
     # labels = dataGen.dataGen().classes
@@ -30,6 +30,9 @@ def PredsToFile(model, datasrc="visible", test=True, filename="D:\Visible\Eval\P
 
         # Take Visible as TRUE class: 0th column in Invisible class; 1st - Visible
         preds_and_labels_batch = np.stack([preds_batch[:, 1], y[:, 1]], axis=1)
+
+        # 6 class
+        #preds_and_labels_batch = np.stack([preds_batch, y], axis=1)
 
         preds_and_labels = preds_and_labels.append(pd.DataFrame(preds_and_labels_batch))
 

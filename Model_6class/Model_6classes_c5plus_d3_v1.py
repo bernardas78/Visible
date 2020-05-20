@@ -94,7 +94,7 @@ def prepModel( input_shape, bn_layers, dropout_layers, l2_layers, padding, dense
     #model.add(Dropout(0.5))
 
     # -1st dense
-    model.add(Dense(6, activation='softmax'))
+    model.add(Dense(6, activation='softmax'))       #6
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])

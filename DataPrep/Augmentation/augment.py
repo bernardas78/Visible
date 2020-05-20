@@ -27,10 +27,10 @@ df_files = pd.read_csv ('ListLabelledFiles.csv', header=None, names=["train_or_t
 #print ('Done Reading. Shape: ' + str(df_files.shape))
 
 datagen=ImageDataGenerator(
-    rotation_range=5, #10,
-    width_shift_range=16, #32,
-    height_shift_range=16, #32,
-    zoom_range=0.05, #0.1,
+    rotation_range=10,
+    width_shift_range=32,
+    height_shift_range=32,
+    zoom_range=0.1,
     horizontal_flip=True
 )
 

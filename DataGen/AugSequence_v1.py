@@ -16,7 +16,7 @@ class AugSequence(keras.utils.Sequence):
 
     def __init__(self, crop_range=1, allow_hor_flip=False, target_size=224, batch_size=32, \
                  subtractMean=0.0, preprocess="div255", \
-                 test=False, shuffle=True, datasrc="visible", debug=False):
+                 train_val_test="train", shuffle=True, datasrc="visible", debug=False):
 
         self.target_size = target_size
         self.crop_range = crop_range
@@ -28,17 +28,24 @@ class AugSequence(keras.utils.Sequence):
         ImageFile.LOAD_TRUNCATED_IMAGES = True
 
         if datasrc == "visible":
-            if test:
+            if train_val_test=="train":
+                data_dir = "C:/TrainAndVal_Visible/train"
+            elif train_val_test == "val":
                 data_dir = "C:/TrainAndVal_Visible/val"
             else:
-                data_dir = "C:/TrainAndVal_Visible/train"
+                data_dir = "C:/TrainAndVal_Visible/test"
+        elif datasrc == "6class":
+            if train_val_test == "train":
+                data_dir = "C:/TrainAndVal_6classes/train"
+            if train_val_test == "val":
+                data_dir = "C:/TrainAndVal_6classes/val"
+            else:
+                data_dir = "C:/TrainAndVal_6classes/test"
         else:
             raise Exception('AugSequence_v1: unknown datasrc')
 
         if preprocess == "div255":
             datagen = ImageDataGenerator(rescale=1. / 255)
-        #elif preprocess == "vgg":
-        #    datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
         else:
             raise Exception('AugSequence_v1: unknown preprocess parameter')
 
