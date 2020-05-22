@@ -49,35 +49,29 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
     #data_dir_6classes_val = r"D:\Visible_Data\4.Augmented\Val"
 
     # define train and validation sets
-    dataGen = ImageDataGenerator(
-        #rotation_range=5, #10,
-        #width_shift_range=16, #32,
-        #height_shift_range=16, #32,
-        ## brightness_range=[0.,2.],
-        #zoom_range=0.05, #0.1,
-        #horizontal_flip=False, #True,
+    trainValDataGen = ImageDataGenerator(
+        rotation_range=5, #15, #10,
+        width_shift_range=16, #48, #32,
+        height_shift_range=16, #48, #32,
+        # brightness_range=[0.,2.],
+        zoom_range=0.05, #0.15, #0.1,
+        horizontal_flip=True,
         rescale=1./255
     )
-    train_iterator = dataGen.flow_from_directory(
+    train_iterator = trainValDataGen.flow_from_directory(
         directory=data_dir_6classes_train,
         target_size=(target_size, target_size),
         batch_size=batch_size,
         shuffle=True,
         class_mode='categorical')
 
-    val_iterator = dataGen.flow_from_directory(
+    val_iterator = trainValDataGen.flow_from_directory(
         directory=data_dir_6classes_val,
         target_size=(target_size, target_size),
         batch_size=batch_size,
         shuffle=True,
         class_mode='categorical')
 
-    test_iterator = dataGen.flow_from_directory(
-        directory=data_dir_6classes_test,
-        target_size=(target_size, target_size),
-        batch_size=batch_size,
-        shuffle=True,
-        class_mode='categorical')
     #trainDataGen = s_6classes_v1.AugSequence(crop_range=crop_range, allow_hor_flip=False, target_size=target_size, batch_size=32,
     #                            subtractMean=0.0, preprocess="div255",
     #                            test=False, shuffle=True, datasrc=datasrc, debug=False)
@@ -114,6 +108,15 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
                         validation_data=val_iterator, validation_steps=len(val_iterator), callbacks=[callback_earlystop,callback_csv_logger])
 
     print ("Evaluating on test set")
+    testDataGen = ImageDataGenerator(
+        rescale=1./255
+    )
+    test_iterator = testDataGen.flow_from_directory(
+        directory=data_dir_6classes_test,
+        target_size=(target_size, target_size),
+        batch_size=batch_size,
+        shuffle=True,
+        class_mode='categorical')
     test_loss = model.evaluate_generator ( test_iterator, steps=len(test_iterator) )
     print ("Test loss: {0}, accuracy: {1}".format(test_loss[0], test_loss[1]))
 

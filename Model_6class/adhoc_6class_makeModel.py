@@ -2,8 +2,8 @@ import Model_6class.Train_6classes_v1 as t_6_v1
 #import Train_6classes_v1 as t_6_v1
 import numpy as np
 
-start_version = 54
-end_version = 54
+start_version = 56
+end_version = 56
 
 # Network architecture
 architecture_dic = [ *np.repeat("Model_6classes_c4_d3_v1", 28).tolist(), # v<=28
@@ -11,13 +11,13 @@ architecture_dic = [ *np.repeat("Model_6classes_c4_d3_v1", 28).tolist(), # v<=28
                      *np.repeat("Model_6classes_c5_d3_v1", 1).tolist(),  # v=30
                      *np.repeat("Model_6classes_c6_d2_v1", 1).tolist(),  # v=31
                      *np.repeat("Model_6classes_c5_d3_v1", 1).tolist(),  # v=32
-                     *np.repeat("Model_6classes_c5plus_d3_v1", 22).tolist(), # Parameterized #conv_layers for v33-54
+                     *np.repeat("Model_6classes_c5plus_d3_v1", 24).tolist(), # Parameterized #conv_layers for v33-56
                       *np.repeat("???", 100).tolist()
 ]
 
 conv_layers_over_5_dic = {
     "default_3": {"value": 3, "versions": [35] },
-    "default_2": {"value": 2, "versions": [34,37,38,39, 40, 41, 42, 43, 44, 45, 46, 47,48,49,50,51,52,53,54] },
+    "default_2": {"value": 2, "versions": [34,37,38,39, 40, 41, 42, 43, 44, 45, 46, 47,48,49,50,51,52,53,54,55,56] },
     "default_1": {"value": 1, "versions": [33,36] },
     "default": {"value": 0, "versions": list(range(100)) },
 }
@@ -31,7 +31,7 @@ use_maxpool_after_conv_layers_after_5th_dic = {
     38: [False,True],
     39: [True,False],
     40: [False, True], 41: [False, True], 42: [False, True], 43: [False, True], 44: [False, True], 45: [False, True], 46: [False, True], 47: [False, True], 48: [False, True], 49: [False, True],
-    50: [False, True], 51: [False, True], 52: [False, True], 53: [False, True], 54: [False, True]
+    50: [False, True], 51: [False, True], 52: [False, True], 53: [False, True], 54: [False, True], 55: [False, True], 56: [False, True]
 }
 
 
@@ -42,7 +42,7 @@ target_size_256_list = np.arange(27,end_version+1)
 # Dense sizes
 dense_sizes_dic = {
     "default_1": {"value": {"d-3": 2048, "d-2": 128}, "versions": list(range(28)) },    # v<=27
-    "default_2": {"value": {"d-3": 256, "d-2": 128}, "versions": [28,30,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54] },
+    "default_2": {"value": {"d-3": 256, "d-2": 128}, "versions": [28,30,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56] },
     "default_3": {"value": {"d-2": 128}, "versions": [29, 31] }
 }
 
@@ -67,7 +67,8 @@ dropout_layers_list = {
     40: ["d-2"],
     41: ["d-3"],
     42: ["d-2", "d-3"],
-    43: ["d-2"],44: ["d-2"],45: ["d-2"],46: ["d-2"],47: ["d-2"],48: ["d-2"],49: ["d-2"],50: ["d-2"],51: ["d-2"],52: ["d-2"],53: ["d-2"],54: ["d-2"]
+    43: ["d-2"],44: ["d-2"],45: ["d-2"],46: ["d-2"],47: ["d-2"],48: ["d-2"],49: ["d-2"],50: ["d-2"],51: ["d-2"],52: ["d-2"],\
+        53: ["d-2"],54: ["d-2"],55: ["d-2"], 56: ["d-2"]
 }
 
 # L2 regularization layers

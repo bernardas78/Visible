@@ -14,10 +14,11 @@ batch_size = 64
 
 sets = ["Train","Val","Test"]
 
-# Feedback 2020.02.24: create #augmented_samples for each class = max #samples in orig class
-#files_to_augment_per_class = {"Train": 8000, "Val": 2000}              #initial logic: just a lot
-#files_to_augment_per_class = {"Train": 1548, "Val": 387 }              # per feedback: up to max class
-files_to_augment_per_class = {"Train": 1200, "Val": 300, "Test": 375}   # adding test set
+# Feedback 2020.02.24: create #augmented_samples for each class = max    #samples in orig class
+#files_to_augment_per_class = {"Train": 8000, "Val": 2000}               #initial logic: just a lot
+#files_to_augment_per_class = {"Train": 1548, "Val": 387 }               # per feedback: up to max class
+#files_to_augment_per_class = {"Train": 1200, "Val": 300, "Test": 375}   # adding test set
+files_per_class = {"Train": 1200, "Val": 300, "Test": 0}     # starting v55, do not augment/balance test data
 
 subcategories = ["1","2","3","4","m","ma"]
 
@@ -49,11 +50,18 @@ for cur_set in sets:
 
         save_to_dir = "\\".join([save_to_dir_template, cur_set, cur_subcategory])
 
-        # Create destination dir
-        os.mkdir(save_to_dir)
+        # First, copy original files to dest
+        print ("Copying original files in {}, sucbcat {}".format (cur_set, cur_subcategory) )
+        src_subcat_dir = "\\".join ( df_files_cur.iloc[0].filepath.split("\\")[:-1] ) # remove filename
+        shutil.copytree( src_subcat_dir, save_to_dir)
+        files_copied = len ( os.listdir(save_to_dir) )
+        print("Done Copying {} original files".format(files_copied) )
 
-        # Init how many files augmented for the cur_subcategory
-        files_agmented_cur_subcategory = 0
+        # Create destination dir (no longer needed since copying original files takes care of that
+        #os.mkdir(save_to_dir)
+
+        # Init how many files augmented for the cur_subcategory (originals included)
+        files_agmented_cur_subcategory = files_copied
 
         #print('Before flow_from_dataframe. Shape: ' + str(df_files_cur.shape))
         augmenter=datagen.flow_from_dataframe(dataframe=df_files_cur, x_col="filepath", y_col="subcategory",
@@ -61,8 +69,7 @@ for cur_set in sets:
                                               save_to_dir= save_to_dir , save_format="jpg", save_prefix="",
                                               batch_size=batch_size, shuffle=False)
 
-        #for batch_id in range(batches_per_class):
-        while files_agmented_cur_subcategory < files_to_augment_per_class[cur_set]:
+        while files_agmented_cur_subcategory < files_per_class[cur_set]:
             X,y = augmenter.next()
             files_agmented_cur_subcategory += y.shape[0]
-            print ("Class {0}, augmented {1} of {2}".format ( cur_subcategory, files_agmented_cur_subcategory, files_to_augment_per_class[cur_set] ) )
+            print ("Class {0}, augmented {1} of {2}".format ( cur_subcategory, files_agmented_cur_subcategory, files_per_class[cur_set] ) )
