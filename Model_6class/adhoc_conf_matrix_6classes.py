@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 import os
 
 version = 40
-model_file_name = r"J:\Visible_models\model_6classes_v" + str(version) + ".h5"
+model_file_name = r"J:\Visible_models\6class\model_6classes_v" + str(version) + ".h5"
 conf_mat_file_name = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Conf_Mat\\model_6classes_v" + str(version) + "_conf_mat.png"
 conf_mat_no_diag_file_name = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Conf_Mat\\model_6classes_v" + str(version) + "_conf_mat_no_diag.png"
 

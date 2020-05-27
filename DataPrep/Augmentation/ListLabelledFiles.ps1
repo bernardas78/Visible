@@ -6,6 +6,9 @@
 $text | Set-Content 'ListLabelledFiles.csv'
 
 
+# Experiments with dataset size
+#get-childitem 'D:\Visible_Data\3.SplitTrainValTest_3647\*' -recurse |
+
 get-childitem 'D:\Visible_Data\3.SplitTrainValTest\*' -recurse |
     where-object { $_.Extension -in '.jpg','.png' } |
     #select-object FullName |

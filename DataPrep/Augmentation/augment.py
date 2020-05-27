@@ -20,6 +20,11 @@ sets = ["Train","Val","Test"]
 #files_to_augment_per_class = {"Train": 1200, "Val": 300, "Test": 375}   # adding test set
 files_per_class = {"Train": 1200, "Val": 300, "Test": 0}     # starting v55, do not augment/balance test data
 
+# Experiments with dataset size
+#files_per_class = {"Train": 1100, "Val": 275, "Test": 0}     # starting v55, do not augment/balance test data
+#files_per_class = {"Train": 1000, "Val": 250, "Test": 0}     # starting v55, do not augment/balance test data
+#files_per_class = {"Train":  900, "Val": 225, "Test": 0}     # starting v55, do not augment/balance test data
+
 subcategories = ["1","2","3","4","m","ma"]
 
 

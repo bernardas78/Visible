@@ -101,7 +101,7 @@ for i in np.arange(start_version,end_version+1):
                    "use_maxpool_after_conv_layers_after_5th": use_maxpool_after_conv_layers_after_5th_dic[i] if i in use_maxpool_after_conv_layers_after_5th_dic else [],
                    "version": i}
     model = t_6_v1.trainModel( **params_dict )
-    model_file_name = r"J:\Visible_models\model_6classes_v" + str(i) + ".h5"
+    model_file_name = r"J:\Visible_models\6class\model_6classes_v" + str(i) + ".h5"
     model.save(model_file_name)
     del model
 

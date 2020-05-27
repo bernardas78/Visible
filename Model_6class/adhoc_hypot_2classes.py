@@ -8,7 +8,7 @@ import math
 import os
 
 version = 40
-model_file_name = r"J:\Visible_models\model_6classes_v" + str(version) + ".h5"
+model_file_name = r"J:\Visible_models\6class\model_6classes_v" + str(version) + ".h5"
 hypot_metrics_file_name = os.environ['GDRIVE'] + "\PhD_Data\Visible_ErrorAnalysis\Hypot_2_3_classes\model_6classes_v" + str(version) + "_hypot_metricst.png"
 conf_mat_file_name_template = os.environ['GDRIVE'] + "\PhD_Data\Visible_ErrorAnalysis\\Conf_Mat\\Hypot2class_model_6classes_v" + str(version) + "_conf_mat_"
 

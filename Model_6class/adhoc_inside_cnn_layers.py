@@ -111,7 +111,7 @@ def show_inside_cnn_layers (version, model, picture_filename):
 for version in versions:
 
     # Load and evaluate model on validation set
-    model_file_name = r"J:\Visible_models\model_6classes_v" + str(version) + ".h5"
+    model_file_name = r"J:\Visible_models\6class\model_6classes_v" + str(version) + ".h5"
     model = load_model(model_file_name)
 
     # Create a folder for single image's interim layers pics

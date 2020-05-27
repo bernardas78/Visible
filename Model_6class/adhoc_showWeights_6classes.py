@@ -13,7 +13,7 @@ import os
 versions = [26,27,28,29,30,31] # cnn456_dense23_impact_on_weights.md
 
 def showWeightsOfModel (version):
-    model_file_name = r"J:\Visible_models\model_6classes_" + version + ".h5"
+    model_file_name = r"J:\Visible_models\6class\model_6classes_" + version + ".h5"
     weights_chart_file_name = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\Weights\model_6classes_" + version + "_weights.png"
 
     #data_dir_6classes_val = r"C:\TrainAndVal_6classes\Val"
