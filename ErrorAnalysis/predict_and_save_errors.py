@@ -11,7 +11,7 @@ from PIL import Image
 save_to_dir_template = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Misclassifications"
 
 # Load model
-model_filename = "j:\\Visible_models\\model_6classes_v5.h5"
+model_filename = "j:\\Visible_models\\6class\\model_6classes_v60.h5"
 model = load_model(model_filename)
 target_shape = ( model.layers[0].input_shape[1], model.layers[0].input_shape[2] )
 
@@ -32,7 +32,7 @@ for subcat_level1 in subcat_names:
             os.mkdir(subcat1_subcat2_root)
 print ("Recreated target dirs in ",save_to_dir_template)
 
-# Predict validation files; save erroroneous guesses
+# Predict test files; save erroroneous guesses
 cnt_errors = 0
 for i,row in df_files.iterrows():
     img = Image.open( row.filepath ).resize( target_shape )

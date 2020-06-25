@@ -94,7 +94,9 @@ def prepModel( input_shape, bn_layers, dropout_layers, l2_layers, padding, dense
     #model.add(Dropout(0.5))
 
     # -1st dense
-    model.add(Dense(6, activation='softmax'))       #6
+    d_1_size = dense_sizes["d-1"] if "d-1" in dense_sizes else 6
+    model.add(Dense(d_1_size, activation='softmax'))
+
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])

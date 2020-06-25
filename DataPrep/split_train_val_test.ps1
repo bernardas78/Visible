@@ -6,9 +6,9 @@
 #$unsplit_images_folder = "D:\Visible_Data\2a.Subtracted_SCO_HSV_MeanIntensity"
 #$unsplit_images_folder = "D:\Visible_Data\2a.Subtracted_SCO_HLS_MeanIntensity"
 #$unsplit_images_folder = "D:\Visible_Data\2.Cropped_BySCO_BgrndRemoved"
-#$unsplit_images_folder = "D:\Visible_Data\2b.Clahe"
+$unsplit_images_folder = "D:\Visible_Data\2b.Clahe"
 #$unsplit_images_folder = "D:\Visible_Data\2.Cropped_BySCO_BgrndMorphologyRemoved"
-$unsplit_images_folder = "D:\Visible_Data\2.Cropped"
+#$unsplit_images_folder = "D:\Visible_Data\2.Cropped"
 
 # Destination train and val directory
 $train_folder = "D:\Visible_Data\3.SplitTrainValTest\Train"

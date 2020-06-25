@@ -5,6 +5,8 @@ from Model_6class import Model_6classes_c6_d2_v1 as m_6classes_c6_d2_v1
 from Model_6class import Model_6classes_c5plus_d3_v1 as m_6classes_c5plus_d3_v1
 from tensorflow.keras.callbacks import EarlyStopping, CSVLogger, ModelCheckpoint
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.models import load_model
+from tensorflow.keras.optimizers import Adam
 
 modelVersions_dic = {
     "Model_6classes_c4_d3_v1": m_6classes_c4_d3_v1.prepModel,
@@ -16,7 +18,7 @@ modelVersions_dic = {
 
 def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
                padding, target_size, dense_sizes,
-               architecture, conv_layers_over_5, use_maxpool_after_conv_layers_after_5th, version):
+               architecture, conv_layers_over_5, use_maxpool_after_conv_layers_after_5th, version, load_existing):
 
     # Trains a model
     #   model = optional parameter; creates new if not passed; otherwise keeps training
@@ -30,6 +32,7 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
     #   conv_layers_over_5 - number of convolutional layers after 5th
     #   use_maxpool_after_conv_layers_after_5th - list of boolean values whether to use maxpooling after 5th layer
     #   version - used to name a learning curve file
+    #   load_existing - whether to load an existing model file
     # Returns:
     #   model: trained Keras model
     #
@@ -42,31 +45,29 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
     #datasrc = "visible"
 
     # Manually copied to C: to speed up training
-    data_dir_6classes_train = r"C:\TrainAndVal_6classes\Train"
-    data_dir_6classes_val = r"C:\TrainAndVal_6classes\Val"
-    data_dir_6classes_test = r"C:\TrainAndVal_6classes\Test"
-    #data_dir_6classes_train = r"D:\Visible_Data\4.Augmented\Train"
-    #data_dir_6classes_val = r"D:\Visible_Data\4.Augmented\Val"
+    data_dir_train = r"C:\TrainAndVal\Train"
+    data_dir_val = r"C:\TrainAndVal\Val"
+    data_dir_test = r"C:\TrainAndVal\Test"
 
     # define train and validation sets
     trainValDataGen = ImageDataGenerator(
-        rotation_range=5, #15, #10,
-        width_shift_range=16, #48, #32,
-        height_shift_range=16, #48, #32,
+        rotation_range=10, #5, #15, #10,             #5-single, 15-triple, 10-double dynamic augmentation
+        width_shift_range=32, #16, #48, #32,
+        height_shift_range=32, #16, #48, #32,
         # brightness_range=[0.,2.],
-        zoom_range=0.05, #0.15, #0.1,
+        zoom_range=0.1, #0.05, #0.15, #0.1,
         horizontal_flip=True,
         rescale=1./255
     )
     train_iterator = trainValDataGen.flow_from_directory(
-        directory=data_dir_6classes_train,
+        directory=data_dir_train,
         target_size=(target_size, target_size),
         batch_size=batch_size,
         shuffle=True,
         class_mode='categorical')
 
     val_iterator = trainValDataGen.flow_from_directory(
-        directory=data_dir_6classes_val,
+        directory=data_dir_val,
         target_size=(target_size, target_size),
         batch_size=batch_size,
         shuffle=True,
@@ -78,18 +79,28 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
 
 
     # Create model
-    prepModel = modelVersions_dic[architecture]
-    prep_model_params = {
-        "input_shape": (target_size,target_size,3),
-        "bn_layers": bn_layers,
-        "dropout_layers": dropout_layers,
-        "l2_layers": l2_layers,
-        "padding": padding,
-        "dense_sizes": dense_sizes,
-        "conv_layers_over_5": conv_layers_over_5,
-        "use_maxpool_after_conv_layers_after_5th": use_maxpool_after_conv_layers_after_5th
-    }
-    model = prepModel (**prep_model_params)
+    if not load_existing:
+        print ("Creating model")
+        prepModel = modelVersions_dic[architecture]
+        prep_model_params = {
+            "input_shape": (target_size,target_size,3),
+            "bn_layers": bn_layers,
+            "dropout_layers": dropout_layers,
+            "l2_layers": l2_layers,
+            "padding": padding,
+            "dense_sizes": dense_sizes,
+            "conv_layers_over_5": conv_layers_over_5,
+            "use_maxpool_after_conv_layers_after_5th": use_maxpool_after_conv_layers_after_5th
+        }
+        model = prepModel (**prep_model_params)
+    else:
+        print ("Loading model")
+        model_file_name = r"J:\Visible_models\6class\model_6classes_v" + str(version) + ".h5"
+        model = load_model(model_file_name)
+        model.compile(loss='categorical_crossentropy',
+                      optimizer=Adam(learning_rate=0.000125), # default LR: 0.001
+                      metrics=['accuracy'])
+
     #model = m_6classes_c4_d3_v1.prepModel( input_shape=(target_size,target_size,3),
     #                                       bn_layers=bn_layers, dropout_layers=dropout_layers, l2_layers=l2_layers,
     #                                       padding=padding, dense_sizes=dense_sizes )
@@ -116,7 +127,7 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
         rescale=1./255
     )
     test_iterator = testDataGen.flow_from_directory(
-        directory=data_dir_6classes_test,
+        directory=data_dir_test,
         target_size=(target_size, target_size),
         batch_size=batch_size,
         shuffle=True,

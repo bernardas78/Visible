@@ -6,12 +6,12 @@ import numpy as np
 from matplotlib import pyplot as plt
 import os
 
-version = 40
+version = 60
 model_file_name = r"J:\Visible_models\6class\model_6classes_v" + str(version) + ".h5"
 conf_mat_file_name = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Conf_Mat\\model_6classes_v" + str(version) + "_conf_mat.png"
 conf_mat_no_diag_file_name = os.environ['GDRIVE'] + "\\PhD_Data\\Visible_ErrorAnalysis\\Conf_Mat\\model_6classes_v" + str(version) + "_conf_mat_no_diag.png"
 
-data_dir_6classes_test = r"C:\TrainAndVal_6classes\Test"
+data_dir_test = r"C:\TrainAndVal\Test"
 #data_dir_6classes_test = r"D:\Visible_Data\3.SplitTrainValTest\Test"
 #data_dir_6classes_test = r"C:\TrainAndVal_6classes\Val"
 
@@ -23,11 +23,11 @@ model = load_model (model_file_name)
 target_size = 256
 batch_size = 32
 
-class_names = os.listdir(data_dir_6classes_test)
+class_names = os.listdir(data_dir_test)
 
 dataGen = ImageDataGenerator( rescale=1. / 255 )
 
-test_iterator = dataGen.flow_from_directory(directory=data_dir_6classes_test, target_size=(target_size, target_size),
+test_iterator = dataGen.flow_from_directory(directory=data_dir_test, target_size=(target_size, target_size),
                                            batch_size=batch_size, shuffle=False, class_mode='categorical')
 
 Y_pred = model.predict_generator(test_iterator, len(test_iterator))

@@ -8,29 +8,36 @@ import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import shutil
 import os
+import numpy as np
 
 save_to_dir_template = r"D:\Visible_Data\4.Augmented"
-batch_size = 64
+batch_size = 32
 
 sets = ["Train","Val","Test"]
+
+print ('Reading file ListLabelledFiles.csv...')
+df_files = pd.read_csv ('ListLabelledFiles.csv', header=None, names=["train_or_test","subcategory","filepath"])
+print ('Done Reading. Shape: ' + str(df_files.shape))
+
 
 # Feedback 2020.02.24: create #augmented_samples for each class = max    #samples in orig class
 #files_to_augment_per_class = {"Train": 8000, "Val": 2000}               #initial logic: just a lot
 #files_to_augment_per_class = {"Train": 1548, "Val": 387 }               # per feedback: up to max class
 #files_to_augment_per_class = {"Train": 1200, "Val": 300, "Test": 375}   # adding test set
-files_per_class = {"Train": 1200, "Val": 300, "Test": 0}     # starting v55, do not augment/balance test data
+#files_per_class = {"Train": 1200, "Val": 300, "Test": 0}     # starting v55, do not augment/balance test data
+files_per_class = {"Train": df_files[df_files.train_or_test=="Train"].groupby(['subcategory']).count().max()[0],  # calculate: up to max class
+                   "Val": df_files[df_files.train_or_test=="Val"].groupby(['subcategory']).count().max()[0],
+                   "Test": 0} # do not augment Test class
 
 # Experiments with dataset size
 #files_per_class = {"Train": 1100, "Val": 275, "Test": 0}     # starting v55, do not augment/balance test data
 #files_per_class = {"Train": 1000, "Val": 250, "Test": 0}     # starting v55, do not augment/balance test data
 #files_per_class = {"Train":  900, "Val": 225, "Test": 0}     # starting v55, do not augment/balance test data
 
-subcategories = ["1","2","3","4","m","ma"]
+#subcategories = ["1","2","3","4","m","ma"]
+subcategories = np.unique ( df_files.subcategory).tolist() #make sure it works for 2 or 6 classes
 
 
-print ('Reading file ListLabelledFiles.csv...')
-df_files = pd.read_csv ('ListLabelledFiles.csv', header=None, names=["train_or_test","subcategory","filepath"])
-#print ('Done Reading. Shape: ' + str(df_files.shape))
 
 datagen=ImageDataGenerator(
     rotation_range=10,

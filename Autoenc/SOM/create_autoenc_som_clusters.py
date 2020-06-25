@@ -13,6 +13,7 @@ from Orange.data import Domain, DiscreteVariable, ContinuousVariable
 from Orange.projection import som
 import time
 import numpy as np
+import pickle
 
 subcategories = ["1","2","3","4","m","ma"]
 
@@ -27,7 +28,7 @@ now = time.time()
 train_tab = Orange.data.Table.from_file( filename=orange_train_activations_filename )
 val_tab = Orange.data.Table.from_file( filename=orange_val_activations_filename )
 test_tab = Orange.data.Table.from_file( filename=orange_test_activations_filename )
-print ("Loaded orange data files is {} seconds".format (time.time()-now) )
+print ("Loaded orange data files in {} seconds".format (time.time()-now) )
 
 # Dest:
 df_accs_filename = os.path.join( orange_encoded_activations_folder, "accuracies.csv" )
@@ -98,12 +99,12 @@ def get_accuracy_som(dim_x, dim_y, n_iterations, l_rate):
 
     # Log metrics
     df_accs = pd.DataFrame(
-        data=[np.hstack([dim_x, dim_y, iter, l_rate, train_acc, val_acc, test_acc])],
+        data=[np.hstack([dim_x, dim_y, n_iterations, l_rate, train_acc, val_acc, test_acc])],
         columns=column_names)
     df_accs.to_csv(df_accs_filename, header=None, index=None, mode='a')
 
     print ("Accuracy train: {}, val: {}, test: {}. Eval took {} secs".format (train_acc, val_acc, test_acc, time.time()-now))
-    return (train_acc, val_acc, test_acc)
+    return (train_acc, val_acc, test_acc, mysom)
 
 ##################################
 # Run a grid search for SOM
@@ -117,9 +118,18 @@ dims = [8, 16, 32]
 n_iterations = [1, 5, 10, 20, 50]
 l_rates = [0.5]
 
+dims = [32]
+n_iterations = [180]
+l_rates = [0.75]
+
 
 for dim in dims:
     for l_rate in l_rates:
         for n_iteration in n_iterations:
             dim_x, dim_y = dim,dim
-            (train_acc, val_acc, test_acc) = get_accuracy_som(dim_x=dim, dim_y=dim, n_iterations=n_iteration, l_rate=l_rate)
+            (train_acc, val_acc, test_acc, mysom) = get_accuracy_som(dim_x=dim, dim_y=dim, n_iterations=n_iteration, l_rate=l_rate)
+
+            # save som
+            filehandler = open("J:\\Visible_models\\SOM\\som_v2.h5", 'wb')
+            pickle.dump(mysom, filehandler)
+            filehandler.close()

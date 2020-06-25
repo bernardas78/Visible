@@ -6,8 +6,7 @@
 $text | Set-Content 'ListValFiles.csv'
 
 
-# get-childitem 'C:\TrainAndVal_6classes\Val\*' -recurse |
-get-childitem 'D:\Visible_Data\3.SplitTrainVal\Val\*' -recurse |
+get-childitem 'C:\TrainAndVal\Test\*' -recurse |
     where-object { $_.Extension -in '.jpg','.png' } |
     #select-object FullName |
     ForEach-Object {
