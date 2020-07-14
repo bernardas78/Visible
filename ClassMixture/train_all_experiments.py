@@ -1,7 +1,7 @@
 # Runs all designed experiments (experiments_class_mixture.csv - which is created by list_class_mixture.py)
 
 import pandas as pd
-from run_one_experiment import runSingleClassMixtureExperiment
+from train_one_experiment import trainSingleClassMixtureExperiment
 
 # Starting point in case it crashed
 start_model = 0
@@ -25,7 +25,7 @@ for i,row in df_exper.iterrows():
     Subcats = {"Visible": Visible_subcats, "Invisible": Invisible_subcats}
     #print ("Invisible:{}, Visible:{}".format(Invisible_subcats,Visible_subcats) )
 
-    runSingleClassMixtureExperiment (Subcats=Subcats, version=i)
+    trainSingleClassMixtureExperiment (Subcats=Subcats, version=i)
 
     # for debugging; remove
     #if i>=1:

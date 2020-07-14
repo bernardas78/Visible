@@ -45,6 +45,9 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
     data_dir_val = r"C:\TrainAndVal\Val"
     data_dir_test = r"C:\TrainAndVal\Test"
 
+    # Save Learning curve
+    lc_filepath_pattern = 'J:/ClassMixture_LearningCurves/lc_v'
+
     # define train and validation sets
     trainValDataGen = ImageDataGenerator(
         rotation_range=10, #5, #15, #10,             #5-single, 15-triple, 10-double dynamic augmentation
@@ -107,7 +110,7 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
 
     callback_earlystop = EarlyStopping(monitor='val_accuracy', min_delta=0.001, patience=20, verbose=1, mode='max',
                                        restore_best_weights=True)
-    callback_csv_logger = CSVLogger('J:/Visible_models/LearningCurves/lc_model_6classes_v' + str(version) + '.csv', separator=",", append=False)
+    callback_csv_logger = CSVLogger(lc_filepath_pattern + str(version) + '.csv', separator=",", append=False)
 
 
     # full epoch is 12x12 = 144 passes over data: 1 times for each subframe

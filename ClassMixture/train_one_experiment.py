@@ -13,7 +13,8 @@ dest_data_folder = "C:\\TrainAndVal"
 model_path_pattern = r"J:\ClassMixture_Models\model_v"
 
 
-def runSingleClassMixtureExperiment (Subcats, version):
+
+def trainSingleClassMixtureExperiment (Subcats, version):
     # Subcats: dictionary {"Visible: ["4",..], "Invisible: []}
     print ("Running experiment vis/invis {}/{}".format(Subcats["Visible"], Subcats["Invisible"]))
 
