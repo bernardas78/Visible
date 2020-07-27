@@ -14,7 +14,7 @@ model_path_pattern = r"J:\ClassMixture_Models\model_v"
 entropy_filename = r"J:\ClassMixture_Metrics\entropies.csv"
 
 # test files location
-test_folder = r"C:\TrainAndVal\Test"
+test_6class_folder = r"C:\TrainAndVal\Test_6class"
 
 subcategories = ['1', '2', '3', '4', 'm', 'ma']
 
@@ -36,8 +36,8 @@ def evalSingleClassMixtureExperiment (version):
     # Get predictions (for all classes)
     image_datagen = ImageDataGenerator(rescale=1. / 255)
     #print("subcat_test_folder:{}".format(test_folder))
-    test_image_generator = image_datagen.flow_from_directory(
-        directory=test_folder,
+    test_image_generator = image_datagen.flow_from_directory (
+        directory= test_6class_folder,
         shuffle=False,
         classes=None,
         class_mode=None)
@@ -55,8 +55,6 @@ def evalSingleClassMixtureExperiment (version):
 
     # for each subcategory, evaluate cross entropy
     for subcat in subcategories:
-
-        # filter by subcat
 
         # subcat_pred_classes has values 0 (Invisible) and 1 (Visible) for a certain subcategory
         subcat_pred_class_indices = np.where (test_image_generator.classes == test_image_generator.class_indices[subcat] )[0]
@@ -94,8 +92,8 @@ def evalSingleClassMixtureExperiment (version):
 
 # otherwise, continuing since memory error
 if start_model == 0:
-    df_accs = pd.DataFrame( columns=["Model (Vis/Invis)",*subcategories,"Mean","Mean_Weighted"])
-    df_accs.to_csv(entropy_filename, header=True, index=None, mode='w')
+    df_entropies = pd.DataFrame( columns=["Model (Vis/Invis)",*subcategories,"Mean","Mean_Weighted"])
+    df_entropies.to_csv(entropy_filename, header=True, index=None, mode='w')
 
 # read experiment configurations (all models must be pretrained)
 for version,row in pd.read_csv(experiments_filename).iterrows():

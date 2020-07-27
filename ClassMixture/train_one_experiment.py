@@ -4,6 +4,7 @@ import shutil
 import os
 import ClassMixture.Train_ClassMixture_v1 as t_cm_v1
 import ClassMixture.create_dataset as cd
+from tensorflow.keras import backend as K
 
 # Source folder with augmented 6-class images
 src_data_folder = "D:\\Visible_Data\\4.Augmented"
@@ -33,10 +34,12 @@ def trainSingleClassMixtureExperiment (Subcats, version):
                    "conv_layers_over_5": 2,
                    "use_maxpool_after_conv_layers_after_5th": [False, True],
                    "version": version,
-                   "load_existing": False}
+                   "load_existing": True}
     model = t_cm_v1.trainModel(**params_dict)
     model_file_name = model_path_pattern + str(version) + ".h5"
-    model.save(model_file_name)
+    #model.save(model_file_name)
     del model
+    K.clear_session()
+
 
     # Evaluate model

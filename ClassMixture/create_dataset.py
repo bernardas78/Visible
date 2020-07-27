@@ -16,7 +16,7 @@ def create_dataset (Subcats, version):
     print ("create_dataset vis/invis {}/{}".format(Subcats["Visible"], Subcats["Invisible"]))
 
     # Copy data into Invisible/Visible folders
-    recreate_folders = [ "Train", "Val" ]
+    recreate_folders = [ "Train", "Val", "Test" ]
     for the_folder in recreate_folders:
 
         the_full_folder = os.path.join(dest_data_folder, the_folder)
@@ -33,8 +33,8 @@ def create_dataset (Subcats, version):
             cnt_visible_subcats = len(Subcats[cat])
             for subcat in Subcats[cat]:
                 for i, img_filename in enumerate( os.listdir( os.path.join(src_data_folder, the_folder, subcat) ) ):
-                    # under-sample if more than 1 subcat in cat
-                    if i%cnt_visible_subcats==0:
+                    # under-sample if more than 1 subcat in cat (except test set)
+                    if i%cnt_visible_subcats==0 or the_folder=="Test":
                         shutil.copyfile ( os.path.join (src_data_folder, the_folder, subcat, img_filename),
                                           os.path.join (dest_data_folder, the_folder, cat, img_filename))
 

@@ -7,6 +7,14 @@ from tensorflow.keras.callbacks import EarlyStopping, CSVLogger, ModelCheckpoint
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 from tensorflow.keras.optimizers import Adam
+import pandas as pd
+import numpy as np
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# Calc and save test accuracies
+test_accuracies_filename = r"J:\ClassMixture_Metrics\test_loss_accuracies.csv"
+# ...and other metrics
+test_metrics_filename = r"J:\ClassMixture_Metrics\test_metrics.csv"
 
 modelVersions_dic = {
     "Model_classmixture_v1": m_classmixture_v1.prepModel
@@ -108,31 +116,47 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
     # prepare a validation data generator, used for early stopping
     # vldDataGen = dg_v1.prepDataGen( target_size=target_size, test=True, batch_size=128, datasrc=datasrc )
 
-    callback_earlystop = EarlyStopping(monitor='val_accuracy', min_delta=0.001, patience=20, verbose=1, mode='max',
-                                       restore_best_weights=True)
-    callback_csv_logger = CSVLogger(lc_filepath_pattern + str(version) + '.csv', separator=",", append=False)
+    if not load_existing:
+        callback_earlystop = EarlyStopping(monitor='val_accuracy', min_delta=0.001, patience=20, verbose=1, mode='max',
+                                           restore_best_weights=True)
+        callback_csv_logger = CSVLogger(lc_filepath_pattern + str(version) + '.csv', separator=",", append=False)
+
+        model.fit_generator(train_iterator, steps_per_epoch=len(train_iterator), epochs=epochs, verbose=2,
+                            validation_data=val_iterator, validation_steps=len(val_iterator), callbacks=[callback_earlystop,callback_csv_logger])
+
+    print ("Evaluating on test set")
+
+    # Overwrite metric files?
+    mode = 'a' if version>0 else 'w'
+    header = version==0
+
+    testDataGen = ImageDataGenerator( rescale=1./255 )
+    test_iterator = testDataGen.flow_from_directory(
+        directory=data_dir_test,
+        target_size=(target_size, target_size),
+        batch_size=batch_size,
+        shuffle=False,
+        class_mode='categorical')
+    #test_loss, test_acc = model.evaluate_generator ( test_iterator, steps=len(test_iterator) )
+    #print ("Test loss: {0}, accuracy: {1}".format(test_loss, test_acc))
+    #df_accuracies = pd.DataFrame(columns=["version","test_loss","test_acc"],
+    #                             data=[np.hstack([version, test_loss, test_acc])])
+    #df_accuracies.to_csv(test_accuracies_filename, header=header, index=None, mode=mode)
+
+    # calc other important metrics: precision, recall, f1 (also acc for sanity check)
+    predictions = model.predict_generator(test_iterator, steps=len(test_iterator))
+    pred_classes = np.argmax(predictions, axis=1)
+
+    acc = accuracy_score(test_iterator.classes, pred_classes),
+    prec = precision_score(test_iterator.classes, pred_classes),
+    recall = recall_score(test_iterator.classes, pred_classes),
+    f1 = f1_score(test_iterator.classes, pred_classes)
+    df_metrics = pd.DataFrame(columns=["version","acc","prec","recall","f1"],
+                                 data=[np.hstack([version, acc, prec, recall, f1 ])])
+    df_metrics.to_csv(test_metrics_filename, header=header, index=None, mode=mode)
+    print("Test accuracy: {}, precision: {}, recall: {}, f1: {}".format(acc, prec, recall, f1))
 
 
-    # full epoch is 12x12 = 144 passes over data: 1 times for each subframe
-    # model.fit_generator ( dataGen, steps_per_epoch=len(dataGen), epochs=epochs, verbose=2 )
-
-    model.fit_generator(train_iterator, steps_per_epoch=len(train_iterator), epochs=epochs, verbose=2,
-                        validation_data=val_iterator, validation_steps=len(val_iterator), callbacks=[callback_earlystop,callback_csv_logger])
-
-    # End experiments with dataset size
-
-    #print ("Evaluating on test set")
-    #testDataGen = ImageDataGenerator(
-    #    rescale=1./255
-    #)
-    #test_iterator = testDataGen.flow_from_directory(
-    #    directory=data_dir_test,
-    #    target_size=(target_size, target_size),
-    #    batch_size=batch_size,
-    #    shuffle=True,
-    #    class_mode='categorical')
-    #test_loss = model.evaluate_generator ( test_iterator, steps=len(test_iterator) )
-    #print ("Test loss: {0}, accuracy: {1}".format(test_loss[0], test_loss[1]))
 
 
     # print ("Evaluation on train set (1 frame)")
