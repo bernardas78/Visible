@@ -6,12 +6,13 @@ import math
 import numpy as np
 import pandas as pd
 from tensorflow.keras import backend as K
+import os
 
 # model to load from
 model_path_pattern = r"J:\ClassMixture_Models\model_v"
 
 # resulting entropies file
-entropy_filename = r"J:\ClassMixture_Metrics\entropies.csv"
+entropy_filename = os.environ['GDRIVE'] + "\\PhD_Data\\ClassMixture_Metrics\\entropies.csv"
 
 # test files location
 test_6class_folder = r"C:\TrainAndVal\Test_6class"

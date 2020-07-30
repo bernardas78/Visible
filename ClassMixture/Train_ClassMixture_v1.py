@@ -10,11 +10,17 @@ from tensorflow.keras.optimizers import Adam
 import pandas as pd
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import confusion_matrix
+from matplotlib import pyplot as plt
+import seaborn as sns
+import os
 
 # Calc and save test accuracies
-test_accuracies_filename = r"J:\ClassMixture_Metrics\test_loss_accuracies.csv"
+test_accuracies_filename = os.environ['GDRIVE'] + "\\PhD_Data\\ClassMixture_Metrics\\test_loss_accuracies.csv"
 # ...and other metrics
-test_metrics_filename = r"J:\ClassMixture_Metrics\test_metrics.csv"
+test_metrics_filename = os.environ['GDRIVE'] + "\\PhD_Data\\ClassMixture_Metrics\\test_metrics.csv"
+# conf mat file pattern
+conf_mat_file_pattern = os.environ['GDRIVE'] + "\\PhD_Data\\ClassMixture_Metrics\\Conf_Mat\\conf_mat_v{}.png"
 
 modelVersions_dic = {
     "Model_classmixture_v1": m_classmixture_v1.prepModel
@@ -156,8 +162,17 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
     df_metrics.to_csv(test_metrics_filename, header=header, index=None, mode=mode)
     print("Test accuracy: {}, precision: {}, recall: {}, f1: {}".format(acc, prec, recall, f1))
 
+    # conf matrix
+    conf_mat = confusion_matrix(y_true=(1 - test_iterator.classes), y_pred=(1 - pred_classes))
 
-
+    ax = sns.heatmap(np.round(conf_mat / np.sum(conf_mat) * 100, decimals=1), annot=True, fmt='.1f', cbar=False)
+    for t in ax.texts: t.set_text(t.get_text() + " %")
+    ax.set_xticklabels(list(reversed(list(test_iterator.class_indices))), horizontalalignment='right')  # switch category names, like we switched data
+    ax.set_yticklabels(list(reversed(list(test_iterator.class_indices))), horizontalalignment='right')
+    ax.set_xlabel("PREDICTED", weight="bold")
+    ax.set_ylabel("ACTUAL", weight="bold")
+    plt.savefig(conf_mat_file_pattern.format(version))
+    plt.close()
 
     # print ("Evaluation on train set (1 frame)")
     # e_v2.eval(model, target_size=target_size,  datasrc=datasrc)

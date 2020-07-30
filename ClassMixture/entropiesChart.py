@@ -2,9 +2,9 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
+import os
 
-
-df_ent = pd.read_csv("J:\\ClassMixture_Metrics\\entropies.csv")
+df_ent = pd.read_csv(os.environ['GDRIVE'] + "\\PhD_Data\\ClassMixture_Metrics\\entropies.csv")
 
 df_ent.Mean_Weighted
 
