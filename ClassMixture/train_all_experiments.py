@@ -4,7 +4,8 @@ import pandas as pd
 from train_one_experiment import trainSingleClassMixtureExperiment
 
 # Starting point in case it crashed
-start_model = 0
+start_model = 24
+end_model = 24
 
 # experiment configurations
 experiments_filename = "experiments_class_mixture.csv"
@@ -18,6 +19,8 @@ for i,row in df_exper.iterrows():
     #print ("i:{}, row:{}".format(i,row) )
 
     if i<start_model:
+        continue
+    if i>end_model:
         continue
 
     Invisible_subcats = [ subcat for subcat in subcategories if row[subcat] == 0 ]

@@ -165,12 +165,14 @@ def trainModel(epochs,bn_layers, dropout_layers, l2_layers,
     # conf matrix
     conf_mat = confusion_matrix(y_true=(1 - test_iterator.classes), y_pred=(1 - pred_classes))
 
+    sns.set(font_scale=3.0)
     ax = sns.heatmap(np.round(conf_mat / np.sum(conf_mat) * 100, decimals=1), annot=True, fmt='.1f', cbar=False)
     for t in ax.texts: t.set_text(t.get_text() + " %")
-    ax.set_xticklabels(list(reversed(list(test_iterator.class_indices))), horizontalalignment='right')  # switch category names, like we switched data
-    ax.set_yticklabels(list(reversed(list(test_iterator.class_indices))), horizontalalignment='right')
-    ax.set_xlabel("PREDICTED", weight="bold")
-    ax.set_ylabel("ACTUAL", weight="bold")
+    ax.set_xticklabels(list(reversed(list(test_iterator.class_indices))), horizontalalignment='right', size=20)  # switch category names, like we switched data
+    ax.set_yticklabels(list(reversed(list(test_iterator.class_indices))), horizontalalignment='right', size=20)
+    ax.set_xlabel("PREDICTED", weight="bold", size=20)
+    ax.set_ylabel("ACTUAL", weight="bold", size=20)
+    plt.tight_layout()
     plt.savefig(conf_mat_file_pattern.format(version))
     plt.close()
 
